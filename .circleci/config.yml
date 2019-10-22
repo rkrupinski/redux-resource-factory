@@ -5,7 +5,9 @@ jobs:
       - image: circleci/node:12.12.0
     steps:
       - checkout
-      - run: npm ci
+      - run:
+          name: Install all the things
+          command: npm ci
       - run:
           name: Test
           command: npm run test
