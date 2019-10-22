@@ -8,7 +8,12 @@
     "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rkrupinski/redux-resource-factory.git"
+  },
+  "author": "Rafał Krupiński <rkrupinski.npm@gmail.com>",
+  "homepage": "https://github.com/rkrupinski/redux-resource-factory#readme",
   "license": "MIT",
   "devDependencies": {
     "typescript": "^3.6.4"
