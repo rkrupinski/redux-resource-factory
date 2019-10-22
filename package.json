@@ -4,8 +4,13 @@
   "description": "Handle resources like a boss.",
   "main": "dist/index.js",
   "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^3.6.4"
+  }
 }
