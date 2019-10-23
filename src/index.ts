@@ -6,15 +6,13 @@ export type TaggedAction<T, P> = {
   tag?: string;
 };
 
-export type Nullable<T> = T | null;
-
 export type Complete<T> = {
   readonly [P in keyof T]-?: T[P];
 };
 
-export type Resource<T, E = string> = {
-  data: Nullable<T>;
-  error: Nullable<E>;
+export type Resource<T, E> = {
+  data: T | null;
+  error: E | null;
   loading: boolean;
 };
 
@@ -47,7 +45,7 @@ export enum ResourceActionTypes {
 
 export const createResource = <T, E>(
   tag: string,
-  options?: Partial<ResourceOptions<T, E>>
+  options?: ResourceOptions<T, E>
 ) => {
   invariant(
     typeof tag === "string",
@@ -108,6 +106,7 @@ export const createResource = <T, E>(
       case ResourceActionTypes.CANCEL:
         return resource({
           data: state.data,
+          error: state.error,
         });
 
       default:
