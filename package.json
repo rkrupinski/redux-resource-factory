@@ -1,6 +1,6 @@
 {
   "name": "redux-resource-factory",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Handle resources like a boss.",
   "main": "dist/index.js",
   "files": [
