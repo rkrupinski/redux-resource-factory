@@ -4,6 +4,8 @@
 
 Handle resources like a boss 😎.
 
+[API](#api) | [Examples](#examples)
+
 `redux-resource-factory` provides useful abstraction over [redux](https://redux.js.org/)-managed resources that:
 
 * are (typically) asynchronous
@@ -32,8 +34,6 @@ store.dispatch(success({ data: [] }));
 
 store.getState(); // { data: [], error: null, loading: false }
 ```
-
-[API](#api) | [Examples](#examples)
 
 ## API
 
@@ -157,3 +157,61 @@ and the `actionCreators` are:
 ```
 
 ## Examples
+
+### With [redux-thunk](https://github.com/reduxjs/redux-thunk)
+
+```typescript
+export const fetchUser = (
+  userId: User["id"],
+  cancel: Deferred<void>
+): ThunkAction<Promise<void>, AppState, any, AnyAction> => async dispatch => {
+  dispatch(request());
+
+  try {
+    const { data } = await axios.get(
+      `/users/${userId}`,
+      {
+        cancelToken: new CancelToken(c => cancelDefer.promise.then(() => c())),
+      }
+    );
+
+    dispatch(
+      success({ data })
+    );
+  } catch (err) {
+    dispatch(
+      isCancel(err)
+        ? cancel()
+        : error({ data: err })
+    );
+  }
+};
+```
+
+### With [redux-saga](https://redux-saga.js.org/)
+
+```typescript
+function* fetchUserSaga(action: SomeAction) {
+  const source = axios.CancelToken.source();
+
+  yield put(request());
+
+  try {
+    const { data } = yield call(
+      axios.get,
+      `/users/${action.payload.userId}`,
+      { cancelToken: source.token },
+    );
+
+    yield put(success({ data }));
+  } catch (err) {
+    yield put(error({ data: err }));
+  } finally {
+    if (yield cancelled()) {
+      yield put(cancel());
+
+      source.cancel();
+    }
+  }
+}
+```
